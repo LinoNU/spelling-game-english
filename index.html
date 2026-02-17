@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <title>Practica tu Ortografía en Inglés</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+```
+    body {
+        font-family: 'Comic Sans MS', 'Arial', sans-serif;
+        background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 10px;
+        touch-action: manipulation;
+    }
+
+    .container {
+        background: white;
+        border-radius: 20px;
+        padding: 20px;
+        max-width: 700px;
+        width: 100%;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+    }
+
+    h1 {
+        color: #ff6b9d;
+        text-align: center;
+        margin-bottom: 5px;
+        font-size: clamp(1.8em, 5vw, 2.8em);
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .subtitle {
+        text-align: center;
+        color: #666;
+        margin-bottom: 20px;
+        font-size: clamp(1em, 3vw, 1.3em);
+    }
+
+    .score-board {
+        display: flex;
+        justify-content: space-around;
+        margin-bottom: 20px;
+        padding: 15px 10px;
+        background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+        border-radius: 15px;
+    }
+
+    .score-item {
+        text-align: center;
+        flex: 1;
+    }
+
+    .score-label {
+        font-size: clamp(0.8em, 2.5vw, 1em);
+        color: #666;
+        margin-bottom: 5px;
+    }
+
+    .score-value {
+        font-size: clamp(1.5em, 4vw, 2.2em);
+        font-weight: bold;
+        color: #ff6b9d;
+    }
+
+    .spanish-word {
+        text-align: center;
+        margin: 20px 0;
+        padding: 20px 15px;
+        background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+        border-radius: 15px;
+    }
+
+    .spanish-label {
+        font-size: clamp(1em, 3vw, 1.2em);
+        color: #666;
+        margin-bottom: 10px;
+    }
+
+    .spanish-text {
+        font-size: clamp(1.8em, 5vw, 2.5em);
+        font-weight: bold;
+        color: #ff6b9d;
+        word-break: break-word;
+    }
+
+    .word-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: clamp(4px, 1vw, 8px);
+        margin: 30px 0;
+        flex-wrap: wrap;
+        padding: 10px;
+    }
+
+    .letter-box {
+        width: clamp(45px, 10vw, 60px);
+        height: clamp(55px, 12vw, 70px);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: clamp(1.8em, 4vw, 2.5em);
+        font-weight: bold;
+        border-radius: 10px;
+        text-transform: uppercase;
+        flex-shrink: 0;
+    }
+
+    .letter-given {
+        background: linear-gradient(135deg, #c3cfe2 0%, #c3cfe2 100%);
+        color: #333;
+        border: 3px solid #999;
+    }
+
+    .letter-input {
+        background: white;
+        border: 3px dashed #ff6b9d;
+        color: #ff6b9d;
+        cursor: pointer;
+        touch-action: manipulation;
+    }
+
+    .letter-input input {
+        width: 100%;
+        height: 100%;
+        text-align: center;
+        font-size: clamp(1.5em, 3.5vw, 2em);
+        font-weight: bold;
+        border: none;
+        background: transparent;
+        text-transform: uppercase;
+        color: #ff6b9d;
+        font-family: 'Comic Sans MS', 'Arial', sans-serif;
+        touch-action: manipulation;
+    }
+
+    .letter-input input:focus {
+        outline: none;
+    }
+
+    .letter-correct {
+        background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+        border-color: #43e97b;
+        animation: bounce 0.5s;
+    }
+
+    .letter-incorrect {
+        background: linear-gradient(135deg, #ff6b9d 0%, #feca57 100%);
+        border-color: #ff6b9d;
+        animation: shake 0.5s;
+    }
+
+    @keyframes bounce {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-10px); }
+    }
+
+    @keyframes shake {
+        0%, 100% { transform: translateX(0); }
+        25% { transform: translateX(-5px); }
+        75% { transform: translateX(5px); }
+    }
+
+    .button-group {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        margin-top: 20px;
+        flex-wrap: wrap;
+    }
+
+    .game-btn {
+        padding: clamp(12px, 3vw, 18px) clamp(20px, 5vw, 35px);
+        font-size: clamp(1em, 3vw, 1.3em);
+        border: none;
+        border-radius: 15px;
+        cursor: pointer;
+        font-weight: bold;
+        transition: all 0.3s;
+        color: white;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        touch-action: manipulation;
+        -webkit-user-select: none;
+        user-select: none;
+    }
+
+    .check-btn {
+        background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+    }
+
+    .skip-btn {
+        background: linear-gradient(135deg, #feca57 0%, #ff6b9d 100%);
+    }
+
+    .game-btn:active {
+        transform: scale(0.95);
+    }
+
+    @media (hover: hover) {
+        .game-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+    }
+
+    .game-btn:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+        transform: none;
+    }
+
+    .feedback {
+        text-align: center;
+        font-size: clamp(1.2em, 4vw, 1.8em);
+        font-weight: bold;
+        margin: 20px 0;
+        min-height: clamp(40px, 10vw, 50px);
+        word-break: break-word;
+    }
+
+    .correct {
+        color: #43e97b;
+    }
+
+    .incorrect {
+        color: #ff6b9d;
+    }
+
+    .celebration {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: clamp(3em, 10vw, 6em);
+        animation: celebration 1s;
+        pointer-events: none;
+        z-index: 1000;
+    }
+
+    @keyframes celebration {
+        0% { opacity: 0; transform: translate(-50%, -50%) scale(0) rotate(0deg); }
+        50% { opacity: 1; transform: translate(-50%, -50%) scale(1.3) rotate(180deg); }
+        100% { opacity: 0; transform: translate(-50%, -50%) scale(1) rotate(360deg); }
+    }
+
+    .confetti {
+        position: fixed;
+        width: 10px;
+        height: 10px;
+        background: #ff6b9d;
+        animation: confetti-fall 3s linear;
+        pointer-events: none;
+    }
+
+    @keyframes confetti-fall {
+        to {
+            transform: translateY(100vh) rotate(360deg);
+            opacity: 0;
+        }
+    }
+
+    /* Tablet adjustments */
+    @media (min-width: 601px) and (max-width: 1024px) {
+        .container {
+            padding: 30px;
+        }
+        
+        .word-container {
+            gap: 10px;
+        }
+    }
+
+    /* Small mobile phones */
+    @media (max-width: 380px) {
+        .container {
+            padding: 15px;
+        }
+        
+        .letter-box {
+            width: 40px;
+            height: 50px;
+        }
+        
+        .word-container {
+            gap: 3px;
+        }
+        
+        .score-board {
+            padding: 10px 5px;
+        }
+    }
+
+    /* Landscape mode on phones */
+    @media (max-height: 500px) and (orientation: landscape) {
+        body {
+            padding: 5px;
+        }
+        
+        .container {
+            padding: 10px;
+        }
+        
+        h1 {
+            font-size: 1.5em;
+            margin-bottom: 5px;
+        }
+        
+        .subtitle {
+            font-size: 0.9em;
+            margin-bottom: 10px;
+        }
+        
+        .score-board {
+            padding: 8px;
+            margin-bottom: 10px;
+        }
+        
+        .spanish-word {
+            margin: 10px 0;
+            padding: 10px;
+        }
+        
+        .word-container {
+            margin: 15px 0;
+        }
+        
+        .feedback {
+            margin: 10px 0;
+            min-height: 30px;
+        }
+        
+        .button-group {
+            margin-top: 10px;
+        }
+    }
+</style>
+```
+
+</head>
+<body>
+    <div class="container">
+        <h1>✨ Practica tu Inglés ✨</h1>
+        <p class="subtitle">¡Completa las palabras en inglés!</p>
+
+```
+    <div class="score-board">
+        <div class="score-item">
+            <div class="score-label">⭐ Puntos</div>
+            <div class="score-value" id="score">0</div>
+        </div>
+        <div class="score-item">
+            <div class="score-label">✓ Correctas</div>
+            <div class="score-value" id="correct">0</div>
+        </div>
+        <div class="score-item">
+            <div class="score-label">📊 Total</div>
+            <div class="score-value" id="total">0</div>
+        </div>
+    </div>
+
+    <div class="spanish-word">
+        <div class="spanish-label">📖 La palabra en español es:</div>
+        <div class="spanish-text" id="spanishWord"></div>
+    </div>
+
+    <div class="word-container" id="wordContainer"></div>
+
+    <div class="feedback" id="feedback"></div>
+
+    <div class="button-group">
+        <button class="game-btn check-btn" id="checkBtn" onclick="checkAnswer()">
+            ✓ Verificar
+        </button>
+        <button class="game-btn skip-btn" onclick="nextWord()">
+            → Siguiente Palabra
+        </button>
+    </div>
+</div>
+
+<script>
+    // Vocabulario con traducciones al español
+    const vocabulary = [
+        { english: 'poem', spanish: 'poema' },
+        { english: 'poetry', spanish: 'poesía' },
+        { english: 'staple', spanish: 'grapa' },
+        { english: 'single', spanish: 'soltero/único' },
+        { english: 'article', spanish: 'artículo' },
+        { english: 'handle', spanish: 'mango/manija' },
+        { english: 'gentle', spanish: 'gentil/suave' },
+        { english: 'bubble', spanish: 'burbuja' },
+        { english: 'puzzle', spanish: 'rompecabezas' },
+        { english: 'nature', spanish: 'naturaleza' },
+        { english: 'sentence', spanish: 'oración' },
+        { english: 'verb', spanish: 'verbo' },
+        { english: 'noun', spanish: 'sustantivo' },
+        { english: 'adjective', spanish: 'adjetivo' },
+        { english: 'syllable', spanish: 'sílaba' },
+        { english: 'letter', spanish: 'letra' },
+        { english: 'robin', spanish: 'petirrojo' },
+        { english: 'angelfish', spanish: 'pez ángel' },
+        { english: 'snowflakes', spanish: 'copos de nieve' },
+        { english: 'television', spanish: 'televisión' },
+        { english: 'calendar', spanish: 'calendario' },
+        { english: 'thermometer', spanish: 'termómetro' },
+        { english: 'secretary', spanish: 'secretario/a' },
+        { english: 'automobile', spanish: 'automóvil' },
+        { english: 'understand', spanish: 'entender' },
+        { english: 'syllables', spanish: 'sílabas' },
+        { english: 'second', spanish: 'segundo' },
+        { english: 'minute', spanish: 'minuto' },
+        { english: 'hour', spanish: 'hora' },
+        { english: 'month', spanish: 'mes' },
+        { english: 'year', spanish: 'año' },
+        { english: 'noon', spanish: 'mediodía' },
+        { english: 'spin', spanish: 'girar' },
+        { english: 'orbit', spanish: 'órbita' },
+        { english: 'multiply', spanish: 'multiplicar' },
+        { english: 'earth', spanish: 'tierra' },
+        { english: 'temperature', spanish: 'temperatura' },
+        { english: 'sunrise', spanish: 'amanecer' },
+        { english: 'sunset', spanish: 'atardecer' },
+        { english: 'preparation', spanish: 'preparación' },
+        { english: 'celebration', spanish: 'celebración' },
+        { english: 'suggestion', spanish: 'sugerencia' },
+        { english: 'city', spanish: 'ciudad' },
+        { english: 'berlin', spanish: 'Berlín' },
+        { english: 'barcelona', spanish: 'Barcelona' },
+        { english: 'ankara', spanish: 'Ankara' },
+        { english: 'france', spanish: 'Francia' },
+        { english: 'airport', spanish: 'aeropuerto' },
+        { english: 'passenger', spanish: 'pasajero' },
+        { english: 'passport', spanish: 'pasaporte' },
+        { english: 'destination', spanish: 'destino' },
+        { english: 'sick', spanish: 'enfermo' },
+        { english: 'earache', spanish: 'dolor de oído' },
+        { english: 'headache', spanish: 'dolor de cabeza' },
+        { english: 'fever', spanish: 'fiebre' },
+        { english: 'doctor', spanish: 'doctor' },
+        { english: 'medicine', spanish: 'medicina' }
+    ];
+
+    let currentWord = null;
+    let score = 0;
+    let correct = 0;
+    let total = 0;
+    let usedWords = [];
+
+    function getRandomWord() {
+        const availableWords = vocabulary.filter(w => !usedWords.includes(w));
+        if (availableWords.length === 0) {
+            usedWords = [];
+            return vocabulary[Math.floor(Math.random() * vocabulary.length)];
+        }
+        return availableWords[Math.floor(Math.random() * availableWords.length)];
+    }
+
+    function createWordDisplay() {
+        const word = currentWord.english.toLowerCase();
+        const container = document.getElementById('wordContainer');
+        container.innerHTML = '';
+        
+        // Decidir cuántas letras mostrar (aproximadamente 40-60% de la palabra)
+        const wordLength = word.length;
+        let numToShow;
+        
+        if (wordLength <= 4) {
+            numToShow = 1; // Palabras cortas: mostrar 1 letra
+        } else if (wordLength <= 6) {
+            numToShow = 2; // Palabras medianas: mostrar 2 letras
+        } else if (wordLength <= 8) {
+            numToShow = 3; // Palabras más largas: mostrar 3 letras
+        } else {
+            numToShow = Math.floor(wordLength * 0.4); // Palabras muy largas: 40%
+        }
+        
+        // Seleccionar posiciones aleatorias para mostrar
+        const positions = [];
+        // Siempre mostrar la primera letra
+        positions.push(0);
+        numToShow--;
+        
+        // Seleccionar otras posiciones aleatorias
+        while (positions.length < numToShow + 1) {
+            const pos = Math.floor(Math.random() * wordLength);
+            if (!positions.includes(pos)) {
+                positions.push(pos);
+            }
+        }
+        
+        // Crear las cajas de letras
+        for (let i = 0; i < wordLength; i++) {
+            const letterBox = document.createElement('div');
+            letterBox.className = 'letter-box';
+            
+            if (positions.includes(i)) {
+                // Letra dada
+                letterBox.className += ' letter-given';
+                letterBox.textContent = word[i];
+            } else {
+                // Letra a completar
+                letterBox.className += ' letter-input';
+                const input = document.createElement('input');
+                input.type = 'text';
+                input.maxLength = 1;
+                input.dataset.position = i;
+                input.dataset.correct = word[i];
+                input.autocomplete = 'off';
+                input.autocorrect = 'off';
+                input.autocapitalize = 'characters';
+                input.spellcheck = false;
+                input.inputMode = 'text';
+                
+                // Auto-focus al siguiente input
+                input.addEventListener('input', function(e) {
+                    // Convertir a mayúscula automáticamente
+                    this.value = this.value.toUpperCase();
+                    
+                    if (this.value) {
+                        const inputs = document.querySelectorAll('.letter-input input');
+                        const currentIndex = Array.from(inputs).indexOf(this);
+                        if (currentIndex < inputs.length - 1) {
+                            inputs[currentIndex + 1].focus();
+                        } else {
+                            // Si es el último input, quitar el focus para cerrar el teclado
+                            this.blur();
+                        }
+                    }
+                });
+                
+                // Prevenir zoom en iOS al hacer click en el input
+                input.addEventListener('touchstart', function(e) {
+                    e.stopPropagation();
+                });
+                
+                // Permitir backspace para ir al input anterior
+                input.addEventListener('keydown', function(e) {
+                    if (e.key === 'Backspace' && !this.value) {
+                        const inputs = document.querySelectorAll('.letter-input input');
+                        const currentIndex = Array.from(inputs).indexOf(this);
+                        if (currentIndex > 0) {
+                            inputs[currentIndex - 1].focus();
+                        }
+                    }
+                });
+                
+                letterBox.appendChild(input);
+            }
+            
+            container.appendChild(letterBox);
+        }
+        
+        // Focus en el primer input
+        const firstInput = document.querySelector('.letter-input input');
+        if (firstInput) {
+            setTimeout(() => firstInput.focus(), 100);
+        }
+    }
+
+    function nextWord() {
+        currentWord = getRandomWord();
+        usedWords.push(currentWord);
+        
+        document.getElementById('spanishWord').textContent = currentWord.spanish;
+        document.getElementById('feedback').textContent = '';
+        
+        createWordDisplay();
+    }
+
+    function checkAnswer() {
+        const inputs = document.querySelectorAll('.letter-input input');
+        let allCorrect = true;
+        let allFilled = true;
+        
+        inputs.forEach(input => {
+            const userLetter = input.value.toLowerCase().trim();
+            const correctLetter = input.dataset.correct;
+            
+            if (userLetter === '') {
+                allFilled = false;
+            } else if (userLetter === correctLetter) {
+                input.parentElement.classList.remove('letter-incorrect');
+                input.parentElement.classList.add('letter-correct');
+            } else {
+                input.parentElement.classList.remove('letter-correct');
+                input.parentElement.classList.add('letter-incorrect');
+                allCorrect = false;
+            }
+        });
+        
+        if (!allFilled) {
+            document.getElementById('feedback').textContent = '✏️ ¡Completa todas las letras!';
+            document.getElementById('feedback').className = 'feedback';
+            return;
+        }
+        
+        total++;
+        document.getElementById('total').textContent = total;
+        
+        if (allCorrect) {
+            correct++;
+            score += 10;
+            document.getElementById('correct').textContent = correct;
+            document.getElementById('score').textContent = score;
+            
+            document.getElementById('feedback').textContent = '🎉 ¡Excelente! ¡Correcto!';
+            document.getElementById('feedback').className = 'feedback correct';
+            
+            showCelebration();
+            createConfetti();
+            
+            setTimeout(() => {
+                nextWord();
+            }, 2000);
+        } else {
+            document.getElementById('feedback').textContent = '💪 ¡Casi! Revisa las letras en rosado';
+            document.getElementById('feedback').className = 'feedback incorrect';
+        }
+    }
+
+    function showCelebration() {
+        const celebration = document.createElement('div');
+        celebration.className = 'celebration';
+        const emojis = ['🎉', '⭐', '🌟', '✨', '🎊', '🏆', '👏', '💫'];
+        celebration.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+        document.body.appendChild(celebration);
+        setTimeout(() => celebration.remove(), 1000);
+    }
+
+    function createConfetti() {
+        const colors = ['#ff6b9d', '#43e97b', '#feca57', '#a8edea', '#fed6e3'];
+        for (let i = 0; i < 30; i++) {
+            setTimeout(() => {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = Math.random() * 100 + '%';
+                confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.animationDelay = Math.random() * 0.5 + 's';
+                document.body.appendChild(confetti);
+                setTimeout(() => confetti.remove(), 3000);
+            }, i * 30);
+        }
+    }
+
+    // Permitir Enter para verificar
+    document.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            checkAnswer();
+        }
+    });
+
+    // Iniciar el juego
+    nextWord();
+</script>
+```
+
+</body>
+</html>
